@@ -1,0 +1,20 @@
+{
+  "name": "openblender",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "계속 최신으로 업데이트되는 블렌더 웹 잡지",
+  "scripts": {
+    "dev": "vitepress dev",
+    "build": "vitepress build",
+    "preview": "vitepress preview"
+  },
+  "devDependencies": {
+    "vitepress": "^1.6.4",
+    "vue": "^3.5.43"
+  },
+  "allowScripts": {
+    "esbuild@0.21.5": true,
+    "fsevents@2.3.3": true
+  }
+}

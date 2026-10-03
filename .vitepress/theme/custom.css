@@ -1,0 +1,79 @@
+/* ───────── 글꼴 / 색 ───────── */
+:root {
+  --ob-sans: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo',
+    'Malgun Gothic', 'Noto Sans KR', system-ui, sans-serif;
+  --ob-serif: 'Noto Serif KR', 'Nanum Myeongjo', 'Apple SD Gothic Neo', 'Malgun Gothic', serif;
+
+  --vp-font-family-base: var(--ob-sans);
+
+  /* 블렌더 주황을 포인트 색으로 (밝은 화면에서는 글자 대비를 위해 조금 진하게) */
+  --vp-c-brand-1: #c2500c;
+  --vp-c-brand-2: #d95d12;
+  --vp-c-brand-3: #e8671a;
+  --vp-c-brand-soft: rgba(232, 103, 26, 0.12);
+}
+.dark {
+  --vp-c-brand-1: #ffa028;
+  --vp-c-brand-2: #f5902a;
+  --vp-c-brand-3: #f5792a;
+  --vp-c-brand-soft: rgba(245, 121, 42, 0.16);
+}
+
+/* 서재 화면에서는 스크롤 끝 영역도 같은 어두운 색 */
+html.ob-shelf-page body {
+  background: #1c1d20;
+}
+
+/* ───────── 읽기 화면: 한글 본문에 맞게 ───────── */
+.vp-doc {
+  font-size: 16.5px;
+}
+.vp-doc p,
+.vp-doc li {
+  line-height: 1.9;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+.vp-doc h1,
+.vp-doc h2 {
+  font-family: var(--ob-serif);
+  letter-spacing: -0.015em;
+  word-break: keep-all;
+}
+.vp-doc h1 {
+  font-weight: 900;
+}
+.vp-doc h2 {
+  font-weight: 700;
+}
+.vp-doc h3 {
+  word-break: keep-all;
+}
+.vp-doc kbd {
+  display: inline-block;
+  padding: 1px 7px;
+  font-family: var(--vp-font-family-mono);
+  font-size: 0.86em;
+  line-height: 1.6;
+  color: var(--vp-c-text-1);
+  background: var(--vp-c-bg-soft);
+  border: 1px solid var(--vp-c-divider);
+  border-bottom-width: 2px;
+  border-radius: 5px;
+}
+
+/* ───────── 사이드바 맨 위: 서재로 돌아가기 ───────── */
+.back-to-shelf {
+  display: block;
+  margin: 0 0 18px;
+  padding: 8px 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--vp-c-text-2);
+  text-decoration: none;
+  border-bottom: 1px solid var(--vp-c-divider);
+}
+.back-to-shelf:hover,
+.back-to-shelf:focus-visible {
+  color: var(--vp-c-brand-1);
+}
