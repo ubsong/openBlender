@@ -11,6 +11,8 @@ export default defineConfig({
   title: 'openBlender',
   description: '새 버전이 나올 때마다 글도 함께 고쳐 쓰는 블렌더 웹 잡지',
   cleanUrls: true,
+  // README는 저장소 안내용이라 사이트 페이지로 만들지 않아요.
+  srcExclude: ['README*.md'],
 
   head: [
     ['link', { rel: 'icon', href: '/favicon.svg', type: 'image/svg+xml' }],
