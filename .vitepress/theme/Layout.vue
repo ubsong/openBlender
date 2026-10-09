@@ -3,6 +3,7 @@ import DefaultTheme from 'vitepress/theme'
 import { useData, withBase } from 'vitepress'
 import BookShelf from './components/BookShelf.vue'
 import ArticleMeta from './components/ArticleMeta.vue'
+import ImageZoom from './components/ImageZoom.vue'
 
 const { frontmatter } = useData()
 </script>
@@ -18,6 +19,9 @@ const { frontmatter } = useData()
     </template>
     <template #doc-before>
       <ArticleMeta />
+    </template>
+    <template #layout-bottom>
+      <ImageZoom />
     </template>
   </DefaultTheme.Layout>
 </template>

@@ -12,6 +12,11 @@ updated: "2026-10-03"
 
 공식 사이트 [blender.org](https://www.blender.org/download/)의 다운로드 페이지에서 내 운영체제에 맞는 파일을 받아요. Windows, macOS, Linux를 모두 지원해요. 같은 프로그램이 Steam과 Microsoft Store에도 올라와 있어서 그쪽이 편하면 거기서 받아도 돼요.
 
+<figure>
+  <img src="./images/blender-download-page.jpg" alt="blender.org 다운로드 페이지. 가운데에 파란색 Download Blender 버튼이 있고, 그 아래에 운영체제와 버전(v5.2.2 LTS)이 표시되어 있다.">
+  <figcaption>blender.org 다운로드 페이지. 접속한 컴퓨터의 운영체제를 알아서 골라 주고, 다른 운영체제용은 아래 <strong>Windows, Linux, and other versions</strong>에서 고를 수 있어요.</figcaption>
+</figure>
+
 ::: warning 출처를 확인하세요
 블렌더를 받을 때는 공식 사이트나 공식 스토어 페이지인지 꼭 확인하세요. 검색 결과 광고에 비슷한 이름의 사이트가 섞여 있을 수 있어요.
 :::
