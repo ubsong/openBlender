@@ -2,6 +2,7 @@
 import { computed, ref } from 'vue'
 import { useRouter, withBase } from 'vitepress'
 import type { Magazine } from '../../magazines'
+import { data as covers } from '../covers.data'
 
 const props = defineProps<{
   magazine: Magazine
@@ -14,6 +15,14 @@ const router = useRouter()
 const opening = ref(false)
 const isOpen = computed(() => props.magazine.status === 'open')
 const href = computed(() => withBase(`/${props.magazine.id}/`))
+
+// public/covers/<id>.webp 같은 이미지가 있으면 이미지 표지, 없으면 코드로 그린 표지.
+// 이미지를 못 불러오면(주소가 틀렸을 때 등) 코드 표지로 돌아가요.
+const imageFailed = ref(false)
+const coverSrc = computed(() => {
+  const src = covers[props.magazine.id]
+  return src && !imageFailed.value ? withBase(src) : undefined
+})
 
 const caption = computed(() => {
   if (!isOpen.value) return '준비 중'
@@ -74,51 +83,65 @@ const rings = Array.from({ length: 14 }, (_, i) => {
         </span>
 
         <span class="cover">
-          <span class="face front">
+          <span class="face front" :class="{ 'has-image': coverSrc }">
+            <!-- 이미지 표지: 제목까지 이미지에 들어 있어서 글자는 그리지 않아요 -->
+            <img
+              v-if="coverSrc"
+              class="cover-image"
+              :src="coverSrc"
+              alt=""
+              decoding="async"
+              draggable="false"
+              @error="imageFailed = true"
+            />
+
             <span class="spine" aria-hidden="true"></span>
 
-            <svg class="motif" viewBox="0 0 100 100" aria-hidden="true" fill="none"
-              stroke="var(--accent)" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round">
-              <template v-if="magazine.motif === 'cube'">
-                <polygon points="50,10 88,32 50,54 12,32" />
-                <polygon points="12,32 50,54 50,96 12,74" />
-                <polygon points="88,32 50,54 50,96 88,74" />
-                <g fill="var(--accent)" stroke="none">
-                  <rect x="47.5" y="7.5" width="5" height="5" /><rect x="85.5" y="29.5" width="5" height="5" />
-                  <rect x="9.5" y="29.5" width="5" height="5" /><rect x="47.5" y="51.5" width="5" height="5" />
-                  <rect x="47.5" y="93.5" width="5" height="5" /><rect x="9.5" y="71.5" width="5" height="5" />
-                  <rect x="85.5" y="71.5" width="5" height="5" />
-                </g>
-              </template>
+            <!-- 코드 표지: 이미지가 없을 때 -->
+            <template v-if="!coverSrc">
+              <svg class="motif" viewBox="0 0 100 100" aria-hidden="true" fill="none"
+                stroke="var(--accent)" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round">
+                <template v-if="magazine.motif === 'cube'">
+                  <polygon points="50,10 88,32 50,54 12,32" />
+                  <polygon points="12,32 50,54 50,96 12,74" />
+                  <polygon points="88,32 50,54 50,96 88,74" />
+                  <g fill="var(--accent)" stroke="none">
+                    <rect x="47.5" y="7.5" width="5" height="5" /><rect x="85.5" y="29.5" width="5" height="5" />
+                    <rect x="9.5" y="29.5" width="5" height="5" /><rect x="47.5" y="51.5" width="5" height="5" />
+                    <rect x="47.5" y="93.5" width="5" height="5" /><rect x="9.5" y="71.5" width="5" height="5" />
+                    <rect x="85.5" y="71.5" width="5" height="5" />
+                  </g>
+                </template>
 
-              <template v-else-if="magazine.motif === 'sphere'">
-                <circle cx="50" cy="50" r="40" />
-                <ellipse cx="50" cy="50" rx="40" ry="13" />
-                <ellipse cx="50" cy="29" rx="34" ry="9" />
-                <ellipse cx="50" cy="71" rx="34" ry="9" />
-                <ellipse cx="50" cy="50" rx="14" ry="40" />
-                <ellipse cx="50" cy="50" rx="28" ry="40" />
-              </template>
+                <template v-else-if="magazine.motif === 'sphere'">
+                  <circle cx="50" cy="50" r="40" />
+                  <ellipse cx="50" cy="50" rx="40" ry="13" />
+                  <ellipse cx="50" cy="29" rx="34" ry="9" />
+                  <ellipse cx="50" cy="71" rx="34" ry="9" />
+                  <ellipse cx="50" cy="50" rx="14" ry="40" />
+                  <ellipse cx="50" cy="50" rx="28" ry="40" />
+                </template>
 
-              <template v-else-if="magazine.motif === 'grid'">
-                <line v-for="i in 9" :key="'v' + i" :x1="50" :y1="22"
-                  :x2="(i - 1) * 12.5" :y2="96" />
-                <line v-for="(y, i) in [34, 46, 60, 76, 96]" :key="'h' + i"
-                  :x1="50 - (y - 22) * 0.68" :y1="y" :x2="50 + (y - 22) * 0.68" :y2="y" />
-                <line x1="3" y1="60" x2="97" y2="60" stroke-width="2.4" />
-              </template>
+                <template v-else-if="magazine.motif === 'grid'">
+                  <line v-for="i in 9" :key="'v' + i" :x1="50" :y1="22"
+                    :x2="(i - 1) * 12.5" :y2="96" />
+                  <line v-for="(y, i) in [34, 46, 60, 76, 96]" :key="'h' + i"
+                    :x1="50 - (y - 22) * 0.68" :y1="y" :x2="50 + (y - 22) * 0.68" :y2="y" />
+                  <line x1="3" y1="60" x2="97" y2="60" stroke-width="2.4" />
+                </template>
 
-              <template v-else>
-                <ellipse cx="50" cy="52" rx="44" ry="28" />
-                <ellipse cx="50" cy="52" rx="16" ry="8" />
-                <ellipse v-for="(r, i) in rings" :key="i" :cx="r.cx" :cy="r.cy" rx="13" ry="5.5"
-                  :transform="`rotate(${r.rot} ${r.cx} ${r.cy})`" />
-              </template>
-            </svg>
+                <template v-else>
+                  <ellipse cx="50" cy="52" rx="44" ry="28" />
+                  <ellipse cx="50" cy="52" rx="16" ry="8" />
+                  <ellipse v-for="(r, i) in rings" :key="i" :cx="r.cx" :cy="r.cy" rx="13" ry="5.5"
+                    :transform="`rotate(${r.rot} ${r.cx} ${r.cy})`" />
+                </template>
+              </svg>
 
-            <span class="title">{{ magazine.title }}</span>
-            <span class="sub">{{ magazine.subtitle }}</span>
-            <span class="foot"><span>openBlender</span><span>{{ magazine.issue }}</span></span>
+              <span class="title">{{ magazine.title }}</span>
+              <span class="sub">{{ magazine.subtitle }}</span>
+              <span class="foot"><span>openBlender</span><span>{{ magazine.issue }}</span></span>
+            </template>
 
             <span v-if="isNew" class="new">NEW</span>
           </span>
@@ -245,6 +268,17 @@ const rings = Array.from({ length: 14 }, (_, i) => {
   display: flex;
   flex-direction: column;
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+.front.has-image {
+  padding: 0;
+}
+.cover-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* 2:3 비율과 조금 달라도 표지를 꽉 채워요 */
+  user-select: none;
 }
 .back {
   transform: rotateY(180deg);
